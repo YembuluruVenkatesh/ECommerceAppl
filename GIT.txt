@@ -1,0 +1,11 @@
+cd d:
+
+cd Old\ System/Backups/SOW5/Springboot/preparation/ECommerceApplication/
+
+git clone https://github.com/YembuluruVenkatesh/ECommerceAppl.git
+
+git add .
+
+git commit -m "Second Commit"
+
+git push origin
