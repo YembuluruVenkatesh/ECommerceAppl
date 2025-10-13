@@ -46,7 +46,8 @@ public class OrderController {
 
     // ✅ Get all orders for a given customer
     @GetMapping("/by-customer")
-    public List<Order> getOrdersByCustomerId(@RequestParam(required = false) Long customerId) {
+    public List<Order> getOrdersByCustomerId(@RequestParam Long customerId) {
+        logger.info("Fetching orders for customer ID: {}", customerId);
         if (customerId != null) {
             return orderRepository.findByCustomerId(customerId);
         }else {

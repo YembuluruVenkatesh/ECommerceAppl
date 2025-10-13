@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: order-service   # 👈 must be lowercase and match your file name in Git repo (order-service.yml)
+  config:
+    import: optional:configserver:http://localhost:8888  # 👈 fetches config from Config Server
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

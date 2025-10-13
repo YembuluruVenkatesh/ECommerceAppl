@@ -1,0 +1,18 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/YembuluruVenkatesh/ConfigServer.git
+          clone-on-start: true
+          default-label: main  # uncomment if your repo branch is main
+
+        # For local testing with a local Git folder, uncomment and adjust the path:
+        # uri: file:///D:/SpringBoot/ecom-config-repo
+        # default-label: main

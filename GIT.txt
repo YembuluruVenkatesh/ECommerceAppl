@@ -9,3 +9,18 @@ git add .
 git commit -m "Second Commit"
 
 git push origin
+
+git pull
+-------------------------
+
+
+
+mvn clean install
+
+mvn spring-boot:run
+
+------------------------
+
+
+docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommerce -p 3306:3306 -d mysql:8
+

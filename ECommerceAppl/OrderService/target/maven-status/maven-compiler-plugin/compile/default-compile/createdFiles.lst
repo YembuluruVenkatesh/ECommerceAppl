@@ -1,5 +1,8 @@
+com\ecom\CustomerService\dto\ErrorResponse.class
+com\ecom\OrderService\exception\GlobalExceptionHandler.class
 com\ecom\OrderService\Service\OrderService.class
 com\ecom\OrderService\Configuration\AppConfig.class
+com\ecom\OrderService\exception\ResourceNotFoundException.class
 com\ecom\OrderService\Repository\OrderRepository.class
 com\ecom\OrderService\Controller\OrderController.class
 com\ecom\OrderService\OrderServiceApplication.class
