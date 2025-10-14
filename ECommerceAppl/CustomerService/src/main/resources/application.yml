@@ -9,3 +9,14 @@ management:
     web:
       exposure:
         include: "*"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost       # force localhost
+    ip-address: 127.0.0.1     # force IP to localhost
+    prefer-ip-address: true    # register with IP
+    instance-id: customer-service:${server.port}
+    metadata-map:
+      hostname: localhost

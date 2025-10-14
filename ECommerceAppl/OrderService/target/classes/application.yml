@@ -1,11 +1,27 @@
 spring:
   application:
-    name: order-service   # 👈 must be lowercase and match your file name in Git repo (order-service.yml)
+    name: order-service  # 👈 must be lowercase and match your file name in Git repo (order-service.yml)
   config:
     import: optional:configserver:http://localhost:8888  # 👈 fetches config from Config Server
-
+  cloud:
+    client:
+      hostname: localhost
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost       # force localhost
+    ip-address: 127.0.0.1     # force IP to localhost
+    prefer-ip-address: true    # register with IP
+    instance-id: order-service:${server.port}
+    metadata-map:
+      hostname: localhost
+
+
+

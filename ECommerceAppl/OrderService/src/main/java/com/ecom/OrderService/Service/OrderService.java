@@ -39,8 +39,8 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         logger.warn("Creating order: {}", order);
-        String url = "http://localhost:8080/api/customers/" + order.getCustomerId();
-
+        //String url = "http://localhost:8080/api/customers/" + order.getCustomerId(); - // Old (hardcoded)
+        String url = "http://CUSTOMER-SERVICE/api/customers/" + order.getCustomerId(); // New (Eureka service name)
         try {
             ResponseEntity<Customer> response = restTemplate.getForEntity(url, Customer.class);
             logger.warn("Response from Customer Service: {}", response.getBody());

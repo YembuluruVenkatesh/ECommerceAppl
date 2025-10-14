@@ -1,6 +1,6 @@
 cd d:
 
-cd Old\ System/Backups/SOW5/Springboot/preparation/ECommerceApplication/
+cd Old\ System/Backups/SOW5/Springboot/preparation/ECommerceApplication/ECommerceAppl/
 
 git clone https://github.com/YembuluruVenkatesh/ECommerceAppl.git
 

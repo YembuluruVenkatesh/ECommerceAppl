@@ -49,4 +49,10 @@ public class CustomerController {
         CustomerWithOrdersDto response = service.getCustomerWithOrders(id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{customerId}/with-orders")
+    public ResponseEntity<CustomerWithOrdersDto> getCustomerWithOrdersDtoResponseEntityders(@PathVariable Long customerId) {
+        CustomerWithOrdersDto dto = service.getCustomerWithOrders(customerId);
+        return ResponseEntity.ok(dto);
+    }
 }

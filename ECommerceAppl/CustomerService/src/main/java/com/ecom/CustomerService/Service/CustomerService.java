@@ -38,7 +38,8 @@ public class CustomerService {
         Customer customer = getCustomerById(customerId);
 
         // ✅ Ensure OrderService has endpoint /api/orders/by-customer?customerId={id}
-        String url = "http://localhost:8081/api/orders/by-customer?customerId=" + customerId;
+        // String url = "http://localhost:8081/api/orders/by-customer?customerId=" + customerId; // Old (hardcoded)
+        String url = "http://ORDER-SERVICE/api/orders/by-customer?customerId=" + customerId; // New (Eureka service name)
         ResponseEntity<OrderDto[]> response = restTemplate.getForEntity(url, OrderDto[].class);
 
         List<OrderDto> orders = response.getBody() != null ? Arrays.asList(response.getBody()) : List.of();

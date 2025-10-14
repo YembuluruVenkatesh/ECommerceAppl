@@ -1,0 +1,5 @@
+# Created at 2025-10-14T15:50:24.153
+Boot Manifest-JAR contains absolute paths in classpath 'D:\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerceAppl\ECommerceAppl\ProductService\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
