@@ -2,6 +2,7 @@ package com.ecom.CustomerService.Controller;
 
 import com.ecom.CustomerService.Entity.Customer;
 import com.ecom.CustomerService.Service.CustomerService;
+import com.ecom.CustomerService.Service.RefreshScopeCheckServ;
 import com.ecom.CustomerService.dto.CustomerWithOrdersDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +16,13 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService service;
+    private final RefreshScopeCheckServ refreshScopeCheckServ;
     private final static Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
-    public CustomerController(CustomerService service) {
+    public CustomerController(CustomerService service, RefreshScopeCheckServ refreshScopeCheckServ) {
         this.service = service;
+        this.refreshScopeCheckServ = refreshScopeCheckServ;
     }
-
     // Fetch all customers
     @GetMapping
     public List<Customer> getAll() {
@@ -54,5 +56,19 @@ public class CustomerController {
     public ResponseEntity<CustomerWithOrdersDto> getCustomerWithOrdersDtoResponseEntityders(@PathVariable Long customerId) {
         CustomerWithOrdersDto dto = service.getCustomerWithOrders(customerId);
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/greetingRefreshScope")
+    public String getGreeting() {
+        logger.info("Fetching greeting");
+        return refreshScopeCheckServ.getHello(); // fetches dynamic config
+    }
+
+    @GetMapping("/info")
+    public String getCustomerInfo() {
+        logger.info("Fetching customer info");
+        return refreshScopeCheckServ.getGreeting() +
+                " (Default Name: " + refreshScopeCheckServ.getDefaultName() +
+                ", Max Orders: " + refreshScopeCheckServ.getMaxOrders() + ")";
     }
 }

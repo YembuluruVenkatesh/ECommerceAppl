@@ -3,6 +3,7 @@ com\ecom\CustomerService\dto\ErrorResponse.class
 com\ecom\CustomerService\dto\OrderResponse.class
 com\ecom\CustomerService\Config\AppConfig.class
 com\ecom\CustomerService\Entity\Customer.class
+com\ecom\CustomerService\Service\RefreshScopeCheckServ.class
 com\ecom\CustomerService\CustomerServiceApplication.class
 com\ecom\CustomerService\Service\CustomerService.class
 com\ecom\CustomerService\dto\CustomerWithOrdersDto.class
