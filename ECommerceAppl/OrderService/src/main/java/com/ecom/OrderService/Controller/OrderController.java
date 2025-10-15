@@ -2,6 +2,7 @@ package com.ecom.OrderService.Controller;
 
 import com.ecom.OrderService.Entity.Order;
 import com.ecom.OrderService.Repository.OrderRepository;
+import com.ecom.OrderService.Service.OrderConfigService;
 import com.ecom.OrderService.Service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +16,16 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService service;
+    private final OrderConfigService configService;
     private final OrderRepository orderRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     // ✅ Constructor Injection for both Service and Repository
-    public OrderController(OrderService service, OrderRepository orderRepository) {
+    public OrderController(OrderService service, OrderRepository orderRepository, OrderConfigService configService) {
         this.service = service;
         this.orderRepository = orderRepository;
+        this.configService = configService;
     }
 
     // ✅ Get all orders
@@ -53,5 +56,9 @@ public class OrderController {
         }else {
             return orderRepository.findAll();
         }
+    }
+    @GetMapping("/greeting")
+    public String greeting() {
+        return configService.getGreeting();
     }
 }
