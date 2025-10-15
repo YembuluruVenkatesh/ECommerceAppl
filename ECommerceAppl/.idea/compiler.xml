@@ -17,6 +17,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="EurekaServer" />
+        <module name="api-gateway" />
         <module name="ConfigServer" />
       </profile>
       <profile name="Annotation profile for OrderService" enabled="true">
@@ -38,6 +39,7 @@
       <module name="EurekaServer" options="-parameters" />
       <module name="OrderService" options="-parameters" />
       <module name="ProductService" options="-parameters" />
+      <module name="api-gateway" options="-parameters" />
     </option>
   </component>
 </project>

@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: customer-service
+          uri: lb://CUSTOMER-SERVICE      # must match Eureka service name
+          predicates:
+            - Path=/api/customers/**      # forward all /api/customers/** requests
+          # no StripPrefix here, keep full path
+
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/orders/**          # forward all /api/orders/** requests
+          # no StripPrefix
+
+        - id: config-server
+          uri: lb://CONFIG-SERVER
+          predicates:
+            - Path=/api/config/**          # forward config requests
+          # no StripPrefix
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+    instance-id: api-gateway:${server.port}
