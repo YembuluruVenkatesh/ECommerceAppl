@@ -1,6 +1,6 @@
 cd d:
 
-cd Old\ System/Backups/SOW5/Springboot/preparation/ECommerceApplication/ECommerceAppl/
+cd d:\Old\ System/Backups/SOW5/Springboot/preparation/ECommerceApplication/ECommerceAppl/
 
 git clone https://github.com/YembuluruVenkatesh/ECommerceAppl.git
 
@@ -11,6 +11,15 @@ git commit -m "Second Commit"
 git push origin
 
 git pull
+
+
+git checkout -b eureka-server
+
+git add .
+git commit -m "Add Eureka Server project"
+
+git push -u origin eureka-server
+
 -------------------------
 
 
@@ -23,4 +32,13 @@ mvn spring-boot:run
 
 
 docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommerce -p 3306:3306 -d mysql:8
+
+-----------------
+
+ Run Zipkin Server
+
+ docker run -d -p 9411:9411 openzipkin/zipkin
+
+ run:
+ java -jar zipkin-server-<version>.jar
 

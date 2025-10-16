@@ -1,22 +1,72 @@
+server:
+  port: 8081
+
 spring:
   application:
-    name: customer-service   # ? must be lowercase and match your file name in Git repo (customer-service.yml)
+    name: customer-service   # 👈 Must match config name in Git repo (customer-service.yml)
   config:
-    import: optional:configserver:http://localhost:8888  # ? fetches config from Config Server
+    import: optional:configserver:http://localhost:8888  # 👈 Fetch configs from Config Server
 
+# ✅ Expose all actuator endpoints (for health, info, circuitbreaker events, etc.)
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "*"   # 👈 enables /actuator/health, /actuator/info, /actuator/circuitbreaker events
+
+# ✅ Eureka Discovery Client Configuration
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
   instance:
-    hostname: localhost       # force localhost
-    ip-address: 127.0.0.1     # force IP to localhost
-    prefer-ip-address: true    # register with IP
-    instance-id: customer-service:${server.port}
+    hostname: localhost          # 👈 Register using localhost name
+    ip-address: 127.0.0.1        # 👈 Force IP to 127.0.0.1
+    prefer-ip-address: true      # 👈 Prefer showing IP in Eureka UI
+    instance-id: customer-service:${server.port}   # 👈 Unique instance ID
     metadata-map:
       hostname: localhost
+
+# ✅ Resilience4j configuration for Circuit Breaker & Retry
+resilience4j:
+  circuitbreaker:
+    instances:
+      # ---------------------------
+      # 1️⃣ Circuit Breaker for internal Customer logic (like DB fetch)
+      # ---------------------------
+      customerServiceCircuitBreaker:
+        registerHealthIndicator: true      # 👈 Allows actuator to show breaker status
+        slidingWindowSize: 5               # 👈 Evaluate last 5 calls
+        minimumNumberOfCalls: 5            # 👈 Start evaluating only after 5 calls
+        failureRateThreshold: 50           # 👈 If 50% of calls fail → OPEN the circuit
+        waitDurationInOpenState: 5s        # 👈 Stay OPEN for 5 seconds before trying again
+        permittedNumberOfCallsInHalfOpenState: 2  # 👈 Allow 2 test calls in HALF-OPEN
+        automaticTransitionFromOpenToHalfOpenEnabled: true # 👈 Auto move from OPEN → HALF_OPEN
+
+      # ---------------------------
+      # 2️⃣ Circuit Breaker for external Order Service calls
+      # ---------------------------
+      orderServiceCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 5               # 👈 Evaluate last 5 REST calls to Order Service
+        minimumNumberOfCalls: 3            # 👈 Start measuring after 3 calls
+        failureRateThreshold: 50           # 👈 50% failures → Circuit opens
+        waitDurationInOpenState: 5s       # 👈 Stay OPEN for 5 seconds before retrying
+        permittedNumberOfCallsInHalfOpenState: 2  # 👈 2 trial calls allowed in HALF-OPEN
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+  retry:
+    instances:
+      # ---------------------------
+      # 1️⃣ Retry for customer internal operations
+      # ---------------------------
+      customerServiceRetry:
+        maxAttempts: 3     # 👈 Try 3 times before failing
+        waitDuration: 1s   # 👈 Wait 1 second between retries
+
+      # ---------------------------
+      # 2️⃣ Retry for external Order Service calls
+      # ---------------------------
+      orderServiceRetry:
+        maxAttempts: 3     # 👈 Retry 3 times if Order Service fails
+        waitDuration: 2s   # 👈 Wait 2 seconds between each retry
