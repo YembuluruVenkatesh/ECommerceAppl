@@ -43,6 +43,36 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Core Micrometer Tracing -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing</artifactId>
+		</dependency>
+
+		<!-- Brave bridge for Tracing -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-brave</artifactId>
+		</dependency>
+
+		<!-- Zipkin Reporter -->
+		<dependency>
+			<groupId>io.zipkin.reporter2</groupId>
+			<artifactId>zipkin-reporter-brave</artifactId>
+		</dependency>
+
+		<!-- Observation API -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-observation</artifactId>
+		</dependency>
+
+		<!-- Context Propagation for Reactor (critical for Gateway) -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>context-propagation</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>

@@ -13,12 +13,12 @@ git push origin
 git pull
 
 
-git checkout -b eureka-server
+git checkout -b CircuitBreakerWitRetry
 
 git add .
-git commit -m "Add Eureka Server project"
+git commit -m "Add Circuit Breaker Wit Retry"
 
-git push -u origin eureka-server
+git push -u origin CircuitBreakerWitRetry
 
 -------------------------
 

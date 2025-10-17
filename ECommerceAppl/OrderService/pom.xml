@@ -5,7 +5,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- ✅ Parent Spring Boot configuration -->
+	<!-- Parent Spring Boot configuration -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -21,11 +21,11 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2023.0.1</spring-cloud.version> <!-- ✅ Corrected for Spring Boot 3.2.x -->
+		<spring-cloud.version>2023.0.1</spring-cloud.version>
 		<skipTests>true</skipTests>
 	</properties>
 
-	<!-- ✅ Dependency Management for Spring Cloud BOM -->
+	<!-- Spring Cloud BOM -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -39,7 +39,7 @@
 	</dependencyManagement>
 
 	<dependencies>
-		<!-- ✅ Spring Boot Starters -->
+		<!-- Spring Boot Starters -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -55,40 +55,40 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- ✅ Spring Cloud Config Client -->
+		<!-- Config Client -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 
-		<!-- ✅ Eureka Client -->
+		<!-- Eureka Client -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
-		<!-- ✅ Needed for @LoadBalanced RestTemplate -->
+		<!-- LoadBalancer -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
 		</dependency>
 
-		<!-- ✅ Database -->
+		<!-- Database -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
 			<version>8.0.33</version>
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- ✅ Lombok -->
+		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 
-		<!-- ✅ Dev Tools -->
+		<!-- Dev Tools -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -96,13 +96,14 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- ✅ Testing -->
+		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Resilience4j -->
 		<dependency>
 			<groupId>io.github.resilience4j</groupId>
 			<artifactId>resilience4j-spring-boot3</artifactId>
@@ -114,11 +115,38 @@
 			<version>2.0.2</version>
 		</dependency>
 
+
+
+		<!-- Zipkin Reporter -->
+		<dependency>
+			<groupId>io.zipkin.reporter2</groupId>
+			<artifactId>zipkin-reporter-brave</artifactId>
+			<version>2.16.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing</artifactId>
+			<version>1.2.1</version>  <!-- updated -->
+		</dependency>
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-brave</artifactId>
+			<version>1.2.1</version>  <!-- updated -->
+		</dependency>
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>context-propagation</artifactId>
+			<version>1.1.0</version>  <!-- updated -->
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<plugins>
-			<!-- ✅ Compiler Plugin -->
+			<!-- Compiler Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -136,7 +164,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- ✅ Spring Boot Plugin -->
+			<!-- Spring Boot Plugin -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -151,4 +179,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
