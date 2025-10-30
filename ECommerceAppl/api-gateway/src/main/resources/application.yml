@@ -38,3 +38,16 @@ eureka:
     hostname: localhost
     prefer-ip-address: true
     instance-id: api-gateway:${server.port}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0   # Capture 100% of traces
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces # Tempo HTTP endpoint
+      #      endpoint: http://host.docker.internal:4318/v1/traces
+
+logging:
+  pattern:
+    level: "[${spring.application.name}] [%X{traceId:-}] [%X{spanId:-}] %5p %c{1.} - %m%n"

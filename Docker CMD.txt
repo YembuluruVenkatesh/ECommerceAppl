@@ -1,0 +1,77 @@
+
+### 🧱 **Basic Docker Commands**
+
+| **Command**        | **Use / Description**                                  |
+| ------------------ | ------------------------------------------------------ |
+| `docker --version` | Check the installed Docker version.                    |
+| `docker info`      | Display detailed system-wide information about Docker. |
+| `docker login`     | Log in to a Docker registry (e.g., Docker Hub).        |
+| `docker logout`    | Log out from a Docker registry.                        |
+
+---
+
+### 📦 **Image Management**
+
+| **Command**                                | **Use / Description**                                            |
+| ------------------------------------------ | ---------------------------------------------------------------- |
+| `docker pull <image_name>`                 | Download an image from Docker Hub.                               |
+| `docker images`                            | List all images on your system.                                  |
+| `docker rmi <image_id>`                    | Remove a specific image.                                         |
+| `docker build -t <image_name> .`           | Build a Docker image from a Dockerfile in the current directory. |
+| `docker tag <source_image> <target_image>` | Tag an image with a new name.                                    |
+| `docker push <image_name>`                 | Upload (push) an image to Docker Hub or another registry.        |
+
+---
+
+### 🧰 **Container Management**
+
+| **Command**                                | **Use / Description**                                 |
+| ------------------------------------------ | ----------------------------------------------------- |
+| `docker run <image_name>`                  | Run a container from an image.                        |
+| `docker run -d <image_name>`               | Run a container in detached mode (in the background). |
+| `docker run -it <image_name> /bin/bash`    | Start a container and open an interactive terminal.   |
+| `docker ps`                                | List all running containers.                          |
+| `docker ps -a`                             | List all containers (including stopped ones).         |
+| `docker stop <container_id>`               | Stop a running container.                             |
+| `docker start <container_id>`              | Start a stopped container.                            |
+| `docker restart <container_id>`            | Restart a container.                                  |
+| `docker rm <container_id>`                 | Remove a stopped container.                           |
+| `docker exec -it <container_id> /bin/bash` | Access a running container’s terminal.                |
+| `docker logs <container_id>`               | View the logs of a container.                         |
+
+---
+
+### 🧾 **Volumes and Networks**
+
+| **Command**                    | **Use / Description**     |
+| ------------------------------ | ------------------------- |
+| `docker volume ls`             | List all Docker volumes.  |
+| `docker volume create <name>`  | Create a new volume.      |
+| `docker network ls`            | List all Docker networks. |
+| `docker network create <name>` | Create a custom network.  |
+
+---
+
+### 🧹 **Cleanup Commands**
+
+| **Command**              | **Use / Description**                                                |
+| ------------------------ | -------------------------------------------------------------------- |
+| `docker system prune`    | Remove all stopped containers, unused networks, and dangling images. |
+| `docker image prune`     | Remove unused images only.                                           |
+| `docker container prune` | Remove all stopped containers.                                       |
+| `docker volume prune`    | Remove unused volumes.                                               |
+   docker system prune -a    Remove All - If you want a full cleanup (images, containers, volumes, etc.)
+
+---
+
+### ⚙️ **Docker Compose (Multi-Container Setup)**
+
+| **Command**            | **Use / Description**                                                 |
+| ---------------------- | --------------------------------------------------------------------- |
+| `docker-compose up`    | Start all services defined in `docker-compose.yml`.                   |
+| `docker-compose up -d` | Start all services in detached mode.                                  |
+| `docker-compose down`  | Stop and remove containers, networks, and volumes created by Compose. |
+| `docker-compose logs`  | View logs of all services.                                            |
+| `docker-compose ps`    | List all running services.                                            |
+
+
