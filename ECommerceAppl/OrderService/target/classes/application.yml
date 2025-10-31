@@ -3,6 +3,11 @@ spring:
     name: order-service  # 👈 must be lowercase and match your file name in Git repo (order-service.yml)
   config:
     import: optional:configserver:http://localhost:8888  # 👈 fetches config from Config Server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8085/realms/microservices-realm
   cloud:
     client:
       hostname: localhost

@@ -4,6 +4,7 @@ com\ecom\OrderService\Controller\OrderController.class
 com\ecom\OrderService\Controller\OrderControllerCircuitBreaker.class
 com\ecom\OrderService\OrderServiceApplication.class
 com\ecom\OrderService\Entity\Customer.class
+com\ecom\OrderService\Configuration\ResourceServerConfig.class
 com\ecom\OrderService\Service\OrderConfigService.class
 com\ecom\OrderService\exception\GlobalExceptionHandler.class
 com\ecom\OrderService\Configuration\AppConfig.class

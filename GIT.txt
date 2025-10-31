@@ -1,6 +1,8 @@
-cd d:
+cd '.\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerceAppl\' - CMD
 
-cd d:\Old\ System/Backups/SOW5/Springboot/preparation/ECommerceApplication/ECommerceAppl/
+cd d:
+ 
+cd d:\Old\ System/Backups/SOW5/Springboot/preparation/ECommerceApplication/ECommerceAppl/ - GIT
 
 git clone https://github.com/YembuluruVenkatesh/ECommerceAppl.git
 
@@ -13,12 +15,11 @@ git push origin
 git pull
 
 
-git checkout -b eureka-server
-
+git checkout -b TracingWithGrafanaTempoLoki
 git add .
-git commit -m "Add Eureka Server project"
+git commit -m "Doc 9 — Distributed Tracing and Logging with Grafana Tempo + Loki"
 
-git push -u origin eureka-server
+git push -u origin TracingWithGrafanaTempoLoki
 
 -------------------------
 
@@ -33,7 +34,11 @@ mvn spring-boot:run
 
 docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommerce -p 3306:3306 -d mysql:8
 
------------------
+----------------------------------keycloak-------------------------------------
+
+docker run -d --name keycloak -p 8085:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:25.0.0 start-dev
+
+-----------------  Zipkin ----------------------------------------
 
  Run Zipkin Server
 
@@ -41,4 +46,26 @@ docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommer
 
  run:
  java -jar zipkin-server-<version>.jar
+
+------------ Distributed Tracing and Logging with Grafana Tempo + Loki ----------------
+
+Create a docker-compose.yml file in your root project folder (e.g. /ECommerceApplication/observability/).
+bash : docker-compose up -d
+docker compose down
+
+docker compose logs tempo - to see the logs
+docker ps - to see the running containsers
+
+
+
+Grafana → http://localhost:3000
+Loki → http://localhost:3100
+Tempo → http://localhost:3200
+
+Use Grafana credentials:
+Username: admin
+Password: admin
+
+-----------------requird---------------
+
 

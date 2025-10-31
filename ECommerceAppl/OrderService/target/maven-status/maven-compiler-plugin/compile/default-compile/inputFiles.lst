@@ -9,5 +9,6 @@ D:\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerce
 D:\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerceAppl\ECommerceAppl\OrderService\src\main\java\com\ecom\OrderService\Repository\OrderRepository.java
 D:\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerceAppl\ECommerceAppl\OrderService\src\main\java\com\ecom\OrderService\Entity\Order.java
 D:\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerceAppl\ECommerceAppl\OrderService\src\main\java\com\ecom\OrderService\OrderServiceApplication.java
+D:\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerceAppl\ECommerceAppl\OrderService\src\main\java\com\ecom\OrderService\Configuration\ResourceServerConfig.java
 D:\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerceAppl\ECommerceAppl\OrderService\src\main\java\com\ecom\OrderService\dto\ErrorResponse.java
 D:\Old System\Backups\SOW5\Springboot\preparation\ECommerceApplication\ECommerceAppl\ECommerceAppl\OrderService\src\main\java\com\ecom\OrderService\exception\GlobalExceptionHandler.java

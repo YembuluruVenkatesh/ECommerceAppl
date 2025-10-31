@@ -1,4 +1,5 @@
 com\ecom\CustomerService\dto\CustomerWithOrders.class
+com\ecom\CustomerService\Controller\CustomerControllerkeyClock.class
 com\ecom\CustomerService\dto\ErrorResponse.class
 com\ecom\CustomerService\dto\OrderResponse.class
 com\ecom\CustomerService\Config\AppConfig.class
@@ -8,6 +9,7 @@ com\ecom\CustomerService\CustomerServiceApplication.class
 com\ecom\CustomerService\Service\CustomerService.class
 com\ecom\CustomerService\dto\CustomerWithOrdersDto.class
 com\ecom\CustomerService\Controller\CustomerControllerCircuitBreaker.class
+com\ecom\CustomerService\Config\ResourceServerConfig.class
 com\ecom\CustomerService\dto\OrderDto.class
 com\ecom\CustomerService\exception\GlobalExceptionHandler.class
 com\ecom\CustomerService\Service\CustomerServiceCircuitBreakerWitRetry.class

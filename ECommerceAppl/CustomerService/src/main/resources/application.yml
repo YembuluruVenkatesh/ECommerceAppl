@@ -6,6 +6,11 @@ spring:
     name: customer-service   # 👈 Must match config name in Git repo (customer-service.yml)
   config:
     import: optional:configserver:http://localhost:8888  # 👈 Fetch configs from Config Server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8085/realms/microservices-realm
 
 # ✅ Expose all actuator endpoints (for health, info, circuitbreaker events, etc.)
 management:
