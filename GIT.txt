@@ -13,12 +13,12 @@ git push origin
 git pull
 
 
-git checkout -b eureka-server
+git checkout -b JWTAuthImplSpringCloudAPIGateway
 
 git add .
-git commit -m "Add Eureka Server project"
+git commit -m "JWT Authentication implementation in Spring Cloud API Gateway"
 
-git push -u origin eureka-server
+git push -u origin JWTAuthImplSpringCloudAPIGateway
 
 -------------------------
 
@@ -31,7 +31,7 @@ mvn spring-boot:run
 ------------------------
 
 
-docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommerce -p 3306:3306 -d mysql:8
+docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommerce -p 3307:3306 -d mysql:8
 
 -----------------
 
@@ -41,4 +41,15 @@ docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommer
 
  run:
  java -jar zipkin-server-<version>.jar
+
+--------------------
+
+CustomerService and OrderService are independent microservices.
+Both services are registered with Eureka Discovery Server.
+Configuration is centralized using Spring Cloud Config Server.
+Requests route through the API Gateway.
+Configuration is dynamically refreshable using @RefreshScope.
+Building Resilient Microservices (Circuit Breaker, Retry & Fallback)
+we done till now, now we want to added the security JWT tokens 
+
 

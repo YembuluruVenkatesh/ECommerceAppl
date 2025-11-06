@@ -38,3 +38,6 @@ eureka:
     hostname: localhost
     prefer-ip-address: true
     instance-id: api-gateway:${server.port}
+jwt:
+  secret: mysecretkeyformicroservices1234567890
+  expiration: 3600000  # 1 hour
