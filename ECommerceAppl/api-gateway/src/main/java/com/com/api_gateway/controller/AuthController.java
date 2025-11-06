@@ -17,12 +17,14 @@ public class AuthController {
 
     @PostMapping("/token")
     public ResponseEntity<?> generateToken(@RequestParam String username, @RequestParam String password) {
-        // Simple hardcoded authentication for demo
-        System.out.println("in generateToken"+username+", "+password);
         if ("user".equals(username) && "password".equals(password)) {
             String token = jwtUtil.generateToken(username, List.of("ROLE_USER"));
-            return ResponseEntity.ok(Map.of("access_token", token, "token_type", "Bearer"));
+            return ResponseEntity.ok(Map.of("access_token", token, "role", "ROLE_USER"));
+        } else if ("admin".equals(username) && "admin123".equals(password)) {
+            String token = jwtUtil.generateToken(username, List.of("ROLE_ADMIN"));
+            return ResponseEntity.ok(Map.of("access_token", token, "role", "ROLE_ADMIN"));
+        } else {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
         }
-        return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
     }
 }

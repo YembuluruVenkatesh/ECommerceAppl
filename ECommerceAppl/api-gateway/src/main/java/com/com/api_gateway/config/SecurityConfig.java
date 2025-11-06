@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
-import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import javax.crypto.SecretKey;
@@ -19,16 +18,18 @@ public class SecurityConfig {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/auth/**").permitAll() // Allow token endpoint
+                        .pathMatchers("/auth/**").permitAll()      // public endpoints
+                        .pathMatchers("/customer/**").hasRole("USER")  // only USER can access
+                        .pathMatchers("/order/**").hasRole("ADMIN")    // only ADMIN can access
                         .anyExchange().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt());
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt()); // validate JWT tokens
 
         return http.build();
     }
 
     @Bean
-    public ReactiveJwtDecoder jwtDecoder(@Value("${jwt.secret}") String secret) {
+    public NimbusReactiveJwtDecoder jwtDecoder(@Value("${jwt.secret}") String secret) {
         byte[] keyBytes = secret.getBytes();
         SecretKey key = Keys.hmacShaKeyFor(keyBytes);
         return NimbusReactiveJwtDecoder.withSecretKey(key).build();
