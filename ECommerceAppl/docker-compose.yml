@@ -97,6 +97,24 @@ services:
         condition: service_started     # Waits until Customer Service starts
 
   # ======================
+  # 📦 product service
+  # ======================
+  product-service:
+    image: ecom/product-service:e1
+    container_name: product-service
+    ports:
+      - "8083:8083"                    # Expose order service API
+    networks:
+      - ecom-net
+    depends_on:
+      config-server:
+        condition: service_healthy     # Requires Config Server
+      mysql-db:
+        condition: service_healthy     # Requires DB
+      customer-service:
+        condition: service_started     # Waits until Customer Service starts
+
+  # ======================
   # 🌐 API Gateway (Entry Point)
   # ======================
   api-gateway:
@@ -110,6 +128,8 @@ services:
       customer-service:
         condition: service_started
       order-service:
+        condition: service_started
+      product-service:
         condition: service_started
       eureka-server:
         condition: service_healthy     # Ensures gateway can register routes properly

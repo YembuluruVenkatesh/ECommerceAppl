@@ -8,8 +8,11 @@
 
  docker run -d --name eureka-server --network ecom-net -p 8761:8761 ecom/eureka-server:e1
  docker run -d --name config-server --network ecom-net -p 8888:8888 ecom/config-server:e1
+
  docker run -d --name customer-service --network ecom-net -p 8081:8081 ecom/customer-service:e1
  docker run -d --name order-service --network ecom-net -p 8082:8082 ecom/order-service:e1
+ docker run -d --name product-service --network ecom-net -p 8083:8083 ecom/product-service:e1
+
  docker run -d --name api-gateway --network ecom-net -p 8080:8080 ecom/api-gateway:e1
  
 

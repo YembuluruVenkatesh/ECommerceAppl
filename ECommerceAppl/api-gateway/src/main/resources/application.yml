@@ -13,30 +13,41 @@ spring:
           lower-case-service-id: true
       routes:
         - id: customer-service
-          uri: lb://CUSTOMER-SERVICE      # must match Eureka service name
+          uri: lb://customer-service
           predicates:
-            - Path=/api/customers/**      # forward all /api/customers/** requests
-          # no StripPrefix here, keep full path
+            - Path=/api/customers/**
+          # filters:
+          #   - StripPrefix=1
 
         - id: order-service
-          uri: lb://ORDER-SERVICE
+          uri: lb://order-service
           predicates:
-            - Path=/api/orders/**          # forward all /api/orders/** requests
-          # no StripPrefix
+            - Path=/api/orders/**
+          # filters:
+          #   - StripPrefix=1
+
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/products/**
+          # filters:
+          #   - StripPrefix=1
 
         - id: config-server
-          uri: lb://CONFIG-SERVER
+          uri: lb://config-server
           predicates:
-            - Path=/api/config/**          # forward config requests
-          # no StripPrefix
+            - Path=/api/config/**
+          # filters:
+          #   - StripPrefix=1
 
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka-server:8761/eureka/   # use container name
+      defaultZone: http://eureka-server:8761/eureka/
   instance:
     prefer-ip-address: true
-    instance-id: config-server:${server.port}
+    instance-id: api-gateway:${server.port}
+
 jwt:
   secret: mysecretkeyformicroservices1234567890
   expiration: 3600000  # 1 hour

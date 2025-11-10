@@ -13,12 +13,12 @@ git push origin
 git pull
 
 
-git checkout -b containerizeMicroservGoogleJib 
+git checkout -b productServiceAdded 
 
 git add .
-git commit -m "containerize your full microservices ecosystem using Google Jib"
+git commit -m "Product Service is Added"
 
-git push -u origin containerizeMicroservGoogleJib
+git push -u origin productServiceAdded
 
 -------------------------
 

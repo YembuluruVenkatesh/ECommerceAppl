@@ -1,4 +1,5 @@
 spring:
   application:
-    name: ProductService
-
+    name: product-service   # must match product-service.yml in Git repo
+  config:
+    import: "optional:configserver:http://config-server:8888"
