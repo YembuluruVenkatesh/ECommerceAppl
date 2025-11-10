@@ -1,5 +1,4 @@
 
-
  mvn clean compile jib:dockerBuild // build Docker Image
 
  docker network create ecom-net // Create a custom Docker network
@@ -15,7 +14,6 @@
  
 
 
-
 docker ps // shows running containers
 
 docker restart config-server // Restart the Config Server
@@ -27,3 +25,21 @@ docker run -d --name customer-service --network ecom-net -p 8081:8081 ecom/custo
 
 docker image ls  // List all images
 docker rmi d760  // remove Imge
+
+docker stop $(docker ps -q)  // stop all running Docker containers
+
+docker ps -q → lists only the container IDs of running containers.
+docker stop → stops them gracefully.
+
+docker container prune   // Remove all stopped containers afterward
+
+
+// From the same directory as your docker-compose.yml file, run:
+ 
+
+docker-compose up -d // Run all services
+
+docker-compose down // To stop all containers
+ 
+docker-compose down -v // want to stop and remove all containers and volumes
+

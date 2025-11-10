@@ -1,0 +1,124 @@
+version: "3.9"  # Docker Compose file format version
+
+services:
+  # ======================
+  # 🗄️ MySQL Database
+  # ======================
+  mysql-db:
+    image: mysql:8
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root        # MySQL root password
+      MYSQL_DATABASE: ecommerce        # Database name
+    ports:
+      - "3307:3306"                    # Host port 3307 -> Container port 3306
+    networks:
+      - ecom-net                       # Connects to custom network
+    volumes:
+      - mysql_data:/var/lib/mysql      # Persist MySQL data between restarts
+    healthcheck:                       # Ensures DB is fully up before others start
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ======================
+  # 🔍 Eureka Server (Service Discovery)
+  # ======================
+  eureka-server:
+    image: ecom/eureka-server:e1
+    container_name: eureka-server
+    ports:
+      - "8761:8761"                    # Expose Eureka dashboard on localhost:8761
+    networks:
+      - ecom-net
+    depends_on:                        # Waits for MySQL to be healthy
+      mysql-db:
+        condition: service_healthy
+    healthcheck:                       # Checks if Eureka dashboard is reachable
+      test: ["CMD", "curl", "-f", "http://localhost:8761/"]
+      interval: 15s
+      timeout: 10s
+      retries: 6
+      start_period: 40s                # Gives Eureka some startup time
+
+  # ======================
+  # ⚙️ Config Server (Centralized Configuration)
+  # ======================
+  config-server:
+    image: ecom/config-server:e1
+    container_name: config-server
+    ports:
+      - "8888:8888"                    # Config Server runs on localhost:8888
+    networks:
+      - ecom-net
+    depends_on:                        # Waits for Eureka to be healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:                       # Uses Spring Boot Actuator for health
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 6
+      start_period: 40s
+
+  # ======================
+  # 👤 Customer Service
+  # ======================
+  customer-service:
+    image: ecom/customer-service:e1
+    container_name: customer-service
+    ports:
+      - "8081:8081"                    # Expose customer service API
+    networks:
+      - ecom-net
+    depends_on:
+      config-server:
+        condition: service_healthy     # Start only after Config Server is ready
+      mysql-db:
+        condition: service_healthy     # Wait for DB readiness
+
+  # ======================
+  # 📦 Order Service
+  # ======================
+  order-service:
+    image: ecom/order-service:e1
+    container_name: order-service
+    ports:
+      - "8082:8082"                    # Expose order service API
+    networks:
+      - ecom-net
+    depends_on:
+      config-server:
+        condition: service_healthy     # Requires Config Server
+      mysql-db:
+        condition: service_healthy     # Requires DB
+      customer-service:
+        condition: service_started     # Waits until Customer Service starts
+
+  # ======================
+  # 🌐 API Gateway (Entry Point)
+  # ======================
+  api-gateway:
+    image: ecom/api-gateway:e1
+    container_name: api-gateway
+    ports:
+      - "8080:8080"                    # Main entry for external clients
+    networks:
+      - ecom-net
+    depends_on:
+      customer-service:
+        condition: service_started
+      order-service:
+        condition: service_started
+      eureka-server:
+        condition: service_healthy     # Ensures gateway can register routes properly
+
+# ======================
+# 🌉 Network & Volumes
+# ======================
+networks:
+  ecom-net:                            # Custom network for service communication
+
+volumes:
+  mysql_data:                          # Persistent MySQL storage
