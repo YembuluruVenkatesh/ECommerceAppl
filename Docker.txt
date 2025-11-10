@@ -1,0 +1,29 @@
+
+
+ mvn clean compile jib:dockerBuild // build Docker Image
+
+ docker network create ecom-net // Create a custom Docker network
+
+ docker run --name mysql-db --network ecom-net -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommerce -p 3307:3306 -d mysql:8
+
+
+ docker run -d --name eureka-server --network ecom-net -p 8761:8761 ecom/eureka-server:e1
+ docker run -d --name config-server --network ecom-net -p 8888:8888 ecom/config-server:e1
+ docker run -d --name customer-service --network ecom-net -p 8081:8081 ecom/customer-service:e1
+ docker run -d --name order-service --network ecom-net -p 8082:8082 ecom/order-service:e1
+ docker run -d --name api-gateway --network ecom-net -p 8080:8080 ecom/api-gateway:e1
+ 
+
+
+
+docker ps // shows running containers
+
+docker restart config-server // Restart the Config Server
+
+docker rm -f customer-service // remove container
+mvn clean compile jib:dockerBuild // build docker image 
+docker run -d --name customer-service --network ecom-net -p 8081:8081 ecom/customer-service:e1 // create container
+
+
+docker image ls  // List all images
+docker rmi d760  // remove Imge

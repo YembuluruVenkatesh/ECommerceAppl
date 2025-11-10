@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ecom</groupId>
-	<artifactId>ConfigServer</artifactId>
+	<artifactId>config-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ConfigServer</name>
 	<description>Config Server</description>
@@ -69,6 +69,20 @@
 
 	<build>
 		<plugins>
+			<!-- Google Jib Plugin for Docker build -->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<from>
+						<image>eclipse-temurin:17-jdk</image>
+					</from>
+					<to>
+						<image>ecom/${project.artifactId}:e1</image><!-- lowercase repo name -->
+					</to>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

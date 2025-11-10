@@ -1,72 +1,121 @@
-server:
-  port: 8081
+#######################################################################################
+# 🧩 CUSTOMER SERVICE - APPLICATION CONFIGURATION
+# This file configures the Spring Boot Customer Service microservice.
+# It connects to:
+# 1️⃣ Config Server (to fetch central configs from Git)
+# 2️⃣ Eureka Server (for service discovery)
+# 3️⃣ MySQL (through values in the Config Server repo)
+# 4️⃣ Resilience4j (for circuit breaker + retry)
+#######################################################################################
 
+server:
+  port: 8081  # The port this service runs on inside Docker
+
+#######################################################################################
+# 🌱 SPRING BOOT APPLICATION CONFIGURATION
+#######################################################################################
 spring:
   application:
-    name: customer-service   # 👈 Must match config name in Git repo (customer-service.yml)
-  config:
-    import: optional:configserver:http://localhost:8888  # 👈 Fetch configs from Config Server
+    name: customer-service   # 👈 Must match config file name in Git repo (customer-service.yml)
 
-# ✅ Expose all actuator endpoints (for health, info, circuitbreaker events, etc.)
+  #############################################################################
+  # 🔗 CONFIG SERVER LINK
+  # Spring Boot 3+ requires 'spring.config.import' to tell it where to fetch
+  # centralized configurations (from Spring Cloud Config Server).
+  #
+  # The "optional:" prefix prevents startup failure if Config Server is down.
+  #
+  # Use the Docker service name (config-server) since all containers share
+  # the same Docker network (ecom-net).
+  #############################################################################
+  config:
+    import: "optional:configserver:http://config-server:8888"
+
+#######################################################################################
+# 🩺 ACTUATOR CONFIGURATION
+# Enables monitoring endpoints like /actuator/health, /actuator/info, etc.
+#######################################################################################
 management:
   endpoints:
     web:
       exposure:
-        include: "*"   # 👈 enables /actuator/health, /actuator/info, /actuator/circuitbreaker events
+        include: "*"   # 👈 Expose all actuator endpoints (health, metrics, etc.)
 
-# ✅ Eureka Discovery Client Configuration
+#######################################################################################
+# 🛰️ EUREKA CLIENT CONFIGURATION
+# Allows this service to register itself with the Eureka Discovery Server.
+#######################################################################################
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka-server:8761/eureka/   # 👈 Use the Docker container name
   instance:
-    hostname: localhost          # 👈 Register using localhost name
-    ip-address: 127.0.0.1        # 👈 Force IP to 127.0.0.1
-    prefer-ip-address: true      # 👈 Prefer showing IP in Eureka UI
-    instance-id: customer-service:${server.port}   # 👈 Unique instance ID
-    metadata-map:
-      hostname: localhost
+    prefer-ip-address: true     # 👈 Register with IP instead of hostname
+    instance-id: customer-service:${server.port}  # 👈 Unique instance ID in Eureka
 
-# ✅ Resilience4j configuration for Circuit Breaker & Retry
+#######################################################################################
+# ⚡ RESILIENCE4J CONFIGURATION
+# Used for circuit breakers, retries, and fault tolerance.
+#######################################################################################
 resilience4j:
+
+  ###########################################################################
+  # 🧯 CIRCUIT BREAKER SETTINGS
+  # Helps protect services from cascading failures.
+  ###########################################################################
   circuitbreaker:
     instances:
-      # ---------------------------
-      # 1️⃣ Circuit Breaker for internal Customer logic (like DB fetch)
-      # ---------------------------
-      customerServiceCircuitBreaker:
-        registerHealthIndicator: true      # 👈 Allows actuator to show breaker status
-        slidingWindowSize: 5               # 👈 Evaluate last 5 calls
-        minimumNumberOfCalls: 5            # 👈 Start evaluating only after 5 calls
-        failureRateThreshold: 50           # 👈 If 50% of calls fail → OPEN the circuit
-        waitDurationInOpenState: 5s        # 👈 Stay OPEN for 5 seconds before trying again
-        permittedNumberOfCallsInHalfOpenState: 2  # 👈 Allow 2 test calls in HALF-OPEN
-        automaticTransitionFromOpenToHalfOpenEnabled: true # 👈 Auto move from OPEN → HALF_OPEN
 
-      # ---------------------------
-      # 2️⃣ Circuit Breaker for external Order Service calls
-      # ---------------------------
-      orderServiceCircuitBreaker:
-        registerHealthIndicator: true
-        slidingWindowSize: 5               # 👈 Evaluate last 5 REST calls to Order Service
-        minimumNumberOfCalls: 3            # 👈 Start measuring after 3 calls
-        failureRateThreshold: 50           # 👈 50% failures → Circuit opens
-        waitDurationInOpenState: 5s       # 👈 Stay OPEN for 5 seconds before retrying
-        permittedNumberOfCallsInHalfOpenState: 2  # 👈 2 trial calls allowed in HALF-OPEN
+      # 1️⃣ Circuit breaker for internal customer logic (like DB operations)
+      customerServiceCircuitBreaker:
+        registerHealthIndicator: true      # Enables health check visibility
+        slidingWindowSize: 5               # Number of calls to evaluate
+        minimumNumberOfCalls: 5            # Minimum calls before starting evaluation
+        failureRateThreshold: 50           # % of failures to trigger OPEN state
+        waitDurationInOpenState: 5s        # Time to wait before switching to HALF_OPEN
+        permittedNumberOfCallsInHalfOpenState: 2  # Allowed test calls when HALF_OPEN
         automaticTransitionFromOpenToHalfOpenEnabled: true
 
+      # 2️⃣ Circuit breaker for external Order Service API calls
+      orderServiceCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+  ###########################################################################
+  # 🔁 RETRY SETTINGS
+  # Automatically retry failed operations before tripping circuit breakers.
+  ###########################################################################
   retry:
     instances:
-      # ---------------------------
-      # 1️⃣ Retry for customer internal operations
-      # ---------------------------
-      customerServiceRetry:
-        maxAttempts: 3     # 👈 Try 3 times before failing
-        waitDuration: 1s   # 👈 Wait 1 second between retries
 
-      # ---------------------------
-      # 2️⃣ Retry for external Order Service calls
-      # ---------------------------
+      # Retry logic for internal customer operations (e.g., DB)
+      customerServiceRetry:
+        maxAttempts: 3        # Max number of retries
+        waitDuration: 1s      # Wait 1 second between retries
+
+      # Retry logic for external Order Service API calls
       orderServiceRetry:
-        maxAttempts: 3     # 👈 Retry 3 times if Order Service fails
-        waitDuration: 2s   # 👈 Wait 2 seconds between each retry
+        maxAttempts: 3
+        waitDuration: 2s
+
+#######################################################################################
+# 🗒️ NOTES:
+# ✅ Database configurations (spring.datasource.*) should be stored centrally
+#    in your Git repo: https://github.com/YembuluruVenkatesh/ConfigServer.git
+# ✅ File name there should be 'customer-service.yml'
+# ✅ Example content in Git:
+#    spring:
+#      datasource:
+#        url: jdbc:mysql://mysql-db:3306/customerdb
+#        username: root
+#        password: root
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#
+# ✅ After updating Git, restart the Config Server:
+#    docker restart config-server
+#######################################################################################

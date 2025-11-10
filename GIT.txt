@@ -13,12 +13,12 @@ git push origin
 git pull
 
 
-git checkout -b JWTAuthImplSpringCloudAPIGateway
+git checkout -b containerizeMicroservGoogleJib 
 
 git add .
-git commit -m "JWT Authentication implementation in Spring Cloud API Gateway"
+git commit -m "containerize your full microservices ecosystem using Google Jib"
 
-git push -u origin JWTAuthImplSpringCloudAPIGateway
+git push -u origin containerizeMicroservGoogleJib
 
 -------------------------
 
