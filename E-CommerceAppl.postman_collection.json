@@ -1,0 +1,677 @@
+{
+	"info": {
+		"_postman_id": "5011d888-745c-4916-8108-e26bb7bf2c12",
+		"name": "E-CommerceAppl",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36884078"
+	},
+	"item": [
+		{
+			"name": "Create customer - http://localhost:8081/api/customers",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john@example.com\",\r\n  \"address\": \"New York\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all customers - http://localhost:8081/api/customers",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create an order http://localhost:8082/api/orders",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customerId\": 1,       // Must exist in CustomerService\r\n  \"product\": \"Laptop\",\r\n  \"quantity\": 2,\r\n  \"price\": 1500.00\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all orders - http://localhost:8082/api/orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer with Orders http://localhost:8081/api/customers/4/with-orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/customers/1/with-orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"1",
+						"with-orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Orders - http://localhost:8082/api/orders/by-customer?customerId=1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/orders/by-customer?customerId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders",
+						"by-customer"
+					],
+					"query": [
+						{
+							"key": "customerId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer with Order Details -  http://localhost:8081/api/customers/1/details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTc2Mjc2MzM3MywiZXhwIjoxNzYyNzY2OTczfQ.pB1uH71-VF46Bg9KmUkfe5y3MqCjtdhMDQP1iCN0nqw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/customers/1/details",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"1",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Config  Customer - http://localhost:8888/customer-service/default",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/customer-service/default",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"customer-service",
+						"default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Config Order - http://localhost:8888/order-service/default",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/order-service/default",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"order-service",
+						"default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API-GatWay Customer http://localhost:8080/api/customers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTc2MjQwODM5NSwiZXhwIjoxNzYyNDExOTk1fQ.WVzxdQLTEAr1XycyUS0lSg7dMt5WZlRyhzH-P0DY2Oo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john@example.com\",\r\n  \"address\": \"New York\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API-GATWAY ORDERS http://localhost:8080/api/orders",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customerId\": 1,       // Must exist in CustomerService\r\n  \"product\": \"Laptop\",\r\n  \"quantity\": 2,\r\n  \"price\": 1500.00\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Refresh -Customer- http://localhost:8081/actuator/refresh",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/actuator/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"actuator",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Refresh -Order http://localhost:8082/actuator/refresh",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/actuator/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Scope API Customer- http://localhost:8081/api/customers/greetingRefreshScope",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/customers/greetingRefreshScope",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"greetingRefreshScope"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Scope ORDER API- http://localhost:8082/api/order/greetingRefreshScope",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/orders/greeting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders",
+						"greeting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "circuit-breaker testing API",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john@example.com\",\r\n  \"address\": \"New York\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/customers/circuit-breaker/1/details",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"circuit-breaker",
+						"1",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/actuator/circuitbreakerevents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/actuator/circuitbreakerevents",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"actuator",
+						"circuitbreakerevents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/actuator/health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/actuator/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "openid-connect/token-keyClock",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "api-gateway",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "api-gateway-secret-please-change",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "testuser",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "test123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8085/realms/microservices-realm/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"realms",
+						"microservices-realm",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST \"http://localhost:8085/realms/microservices-realm/protocol/openid-connect/token\" \\\r\n  -H \"Content-Type: application/x-www-form-urlencoded\" \\\r\n  -d \"grant_type=password\" \\\r\n  -d \"client_id=api-gateway\" \\\r\n  -d \"client_secret=api-gateway-secret-please-change\" \\\r\n  -d \"username=testuser\" \\\r\n  -d \"password=test123\""
+			},
+			"response": []
+		},
+		{
+			"name": "Token - http://localhost:8080/api/customers/profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ0ckcxVUlaR0d4aWdYb1JEY2U4R3ZCX0xmLXBBazFCaWhPck43LUJoQW1ZIn0.eyJleHAiOjE3NjE4OTAxNjksImlhdCI6MTc2MTg4OTg2OSwianRpIjoiNTllN2RkYjQtYTRlZS00ZDA1LTk4NTMtZGU5YjdiZDJhMTc3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg1L3JlYWxtcy9taWNyb3NlcnZpY2VzLXJlYWxtIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImVmNTZkYzZjLTJjZTYtNDlhYy1hOTdlLWM3MzM0Njk5Mzk5MiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFwaS1nYXRld2F5Iiwic2lkIjoiNWRjMWFjYWEtOTRmMC00OThkLTgyOTYtZGJhZDY4NTdlZTBhIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwODAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1taWNyb3NlcnZpY2VzLXJlYWxtIiwiYWRtaW4iLCJ1bWFfYXV0aG9yaXphdGlvbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLW1pY3Jvc2VydmljZXMtcmVhbG0iLCJhZG1pbiIsInVtYV9hdXRob3JpemF0aW9uIiwidXNlciJdLCJuYW1lIjoiVmVua2F0ZXNoIFllbWJ1bHVydSIsInByZWZlcnJlZF91c2VybmFtZSI6InRlc3R1c2VyIiwiZ2l2ZW5fbmFtZSI6IlZlbmthdGVzaCIsImZhbWlseV9uYW1lIjoiWWVtYnVsdXJ1IiwiZW1haWwiOiJ2ZW5rYXRlc2gueWVtYnVsdXJ1ODdAZ21haWwuY29tIn0.wdcyEvR8FWokdhikZeJ00EgRazww7MRXenK12dK73RFS4WHxTRwWJa3tyVrEdYM6rlbgoSJC8hzu__aYh4OMqNtMCeFW1q_ozdKz8qOXSXUrev_RiiCoc5-oumDUnboggaEi_pPDiGfFW6WPkHGjJJ1zfiEeWshCZ9Ci02BlYTgWqM6U-q9L-IYCxAgADH1aIUU-U4tLM4iZFMUd87rE8moHLyXRYd7jrQSCzkUk3htXKe_kFKaSVsZGvQzJtfCD-9XLZGbSBCKJPQo0Tziomfe1cLNPL-g_kXV3lCmUCA_z1f5XUK9gy093iUs8QHyJ45sY7Ebsqo1tBxTMlyqhqA"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/customers/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"profile"
+					]
+				},
+				"description": "Generated from cURL: curl -v -H \"Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ0ckcxVUlaR0d4aWdYb1JEY2U4R3ZCX0xmLXBBazFCaWhPck43LUJoQW1ZIn0.eyJleHAiOjE3NjE4OTAxNjksImlhdCI6MTc2MTg4OTg2OSwianRpIjoiNTllN2RkYjQtYTRlZS00ZDA1LTk4NTMtZGU5YjdiZDJhMTc3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg1L3JlYWxtcy9taWNyb3NlcnZpY2VzLXJlYWxtIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImVmNTZkYzZjLTJjZTYtNDlhYy1hOTdlLWM3MzM0Njk5Mzk5MiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFwaS1nYXRld2F5Iiwic2lkIjoiNWRjMWFjYWEtOTRmMC00OThkLTgyOTYtZGJhZDY4NTdlZTBhIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwODAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1taWNyb3NlcnZpY2VzLXJlYWxtIiwiYWRtaW4iLCJ1bWFfYXV0aG9yaXphdGlvbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLW1pY3Jvc2VydmljZXMtcmVhbG0iLCJhZG1pbiIsInVtYV9hdXRob3JpemF0aW9uIiwidXNlciJdLCJuYW1lIjoiVmVua2F0ZXNoIFllbWJ1bHVydSIsInByZWZlcnJlZF91c2VybmFtZSI6InRlc3R1c2VyIiwiZ2l2ZW5fbmFtZSI6IlZlbmthdGVzaCIsImZhbWlseV9uYW1lIjoiWWVtYnVsdXJ1IiwiZW1haWwiOiJ2ZW5rYXRlc2gueWVtYnVsdXJ1ODdAZ21haWwuY29tIn0.wdcyEvR8FWokdhikZeJ00EgRazww7MRXenK12dK73RFS4WHxTRwWJa3tyVrEdYM6rlbgoSJC8hzu__aYh4OMqNtMCeFW1q_ozdKz8qOXSXUrev_RiiCoc5-oumDUnboggaEi_pPDiGfFW6WPkHGjJJ1zfiEeWshCZ9Ci02BlYTgWqM6U-q9L-IYCxAgADH1aIUU-U4tLM4iZFMUd87rE8moHLyXRYd7jrQSCzkUk3htXKe_kFKaSVsZGvQzJtfCD-9XLZGbSBCKJPQo0Tziomfe1cLNPL-g_kXV3lCmUCA_z1f5XUK9gy093iUs8QHyJ45sY7Ebsqo1tBxTMlyqhqA\" http://localhost:8080/api/customers/profile\r\n"
+			},
+			"response": []
+		},
+		{
+			"name": "JWT - token - gen - User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"username\",\r\n    \"password\":\"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/token?username=user&password=password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user"
+						},
+						{
+							"key": "password",
+							"value": "password"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "JWT - Token - Role Based - Admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/token?username=admin&password=admin123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						},
+						{
+							"key": "password",
+							"value": "admin123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "products to save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"iPhone 16\",\r\n  \"description\": \"Apple iPhone 16 Pro 256GB\",\r\n  \"price\": 1399.99,\r\n  \"stock\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "products to get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
