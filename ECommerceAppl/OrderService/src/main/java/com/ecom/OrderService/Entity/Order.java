@@ -16,7 +16,8 @@ public class Order {
     private Long id;
 
     private Long customerId;
-    private String product;
+    private Long productId;   // ✅ changed from String product to Long productId
     private int quantity;
     private double price;
 }
+

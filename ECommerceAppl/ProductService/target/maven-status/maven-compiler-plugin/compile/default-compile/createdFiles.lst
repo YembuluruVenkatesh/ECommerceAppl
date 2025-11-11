@@ -1,6 +1,8 @@
 com\ecom\ProductService\Controller\ProductController.class
+com\ecom\ProductService\dto\OrderCreatedEvent.class
 com\ecom\ProductService\repository\ProductRepository.class
 com\ecom\ProductService\ProductServiceApplication.class
+com\ecom\ProductService\service\OrderEventListener.class
 com\ecom\ProductService\entity\Product$ProductBuilder.class
 com\ecom\ProductService\entity\Product.class
 com\ecom\ProductService\service\ProductService.class

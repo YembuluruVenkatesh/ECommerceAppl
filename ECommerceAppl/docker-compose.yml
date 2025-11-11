@@ -1,4 +1,4 @@
-version: "3.9"  # Docker Compose file format version
+version: "3.9"
 
 services:
   # ======================
@@ -8,54 +8,54 @@ services:
     image: mysql:8
     container_name: mysql-db
     environment:
-      MYSQL_ROOT_PASSWORD: root        # MySQL root password
-      MYSQL_DATABASE: ecommerce        # Database name
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce
     ports:
-      - "3307:3306"                    # Host port 3307 -> Container port 3306
+      - "3307:3306"
     networks:
-      - ecom-net                       # Connects to custom network
+      - ecom-net
     volumes:
-      - mysql_data:/var/lib/mysql      # Persist MySQL data between restarts
-    healthcheck:                       # Ensures DB is fully up before others start
+      - mysql_data:/var/lib/mysql
+    healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   # ======================
-  # 🔍 Eureka Server (Service Discovery)
+  # 🔍 Eureka Server
   # ======================
   eureka-server:
     image: ecom/eureka-server:e1
     container_name: eureka-server
     ports:
-      - "8761:8761"                    # Expose Eureka dashboard on localhost:8761
+      - "8761:8761"
     networks:
       - ecom-net
-    depends_on:                        # Waits for MySQL to be healthy
+    depends_on:
       mysql-db:
         condition: service_healthy
-    healthcheck:                       # Checks if Eureka dashboard is reachable
+    healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8761/"]
       interval: 15s
       timeout: 10s
       retries: 6
-      start_period: 40s                # Gives Eureka some startup time
+      start_period: 40s
 
   # ======================
-  # ⚙️ Config Server (Centralized Configuration)
+  # ⚙️ Config Server
   # ======================
   config-server:
     image: ecom/config-server:e1
     container_name: config-server
     ports:
-      - "8888:8888"                    # Config Server runs on localhost:8888
+      - "8888:8888"
     networks:
       - ecom-net
-    depends_on:                        # Waits for Eureka to be healthy
+    depends_on:
       eureka-server:
         condition: service_healthy
-    healthcheck:                       # Uses Spring Boot Actuator for health
+    healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
       interval: 15s
       timeout: 10s
@@ -69,14 +69,14 @@ services:
     image: ecom/customer-service:e1
     container_name: customer-service
     ports:
-      - "8081:8081"                    # Expose customer service API
+      - "8081:8081"
     networks:
       - ecom-net
     depends_on:
       config-server:
-        condition: service_healthy     # Start only after Config Server is ready
+        condition: service_healthy
       mysql-db:
-        condition: service_healthy     # Wait for DB readiness
+        condition: service_healthy
 
   # ======================
   # 📦 Order Service
@@ -85,43 +85,45 @@ services:
     image: ecom/order-service:e1
     container_name: order-service
     ports:
-      - "8082:8082"                    # Expose order service API
+      - "8082:8082"
     networks:
       - ecom-net
     depends_on:
+      kafka:
+        condition: service_healthy
       config-server:
-        condition: service_healthy     # Requires Config Server
+        condition: service_healthy
       mysql-db:
-        condition: service_healthy     # Requires DB
+        condition: service_healthy
       customer-service:
-        condition: service_started     # Waits until Customer Service starts
+        condition: service_started
 
   # ======================
-  # 📦 product service
+  # 🏷️ Product Service
   # ======================
   product-service:
     image: ecom/product-service:e1
     container_name: product-service
     ports:
-      - "8083:8083"                    # Expose order service API
+      - "8083:8083"
     networks:
       - ecom-net
     depends_on:
+      kafka:
+        condition: service_healthy
       config-server:
-        condition: service_healthy     # Requires Config Server
+        condition: service_healthy
       mysql-db:
-        condition: service_healthy     # Requires DB
-      customer-service:
-        condition: service_started     # Waits until Customer Service starts
+        condition: service_healthy
 
   # ======================
-  # 🌐 API Gateway (Entry Point)
+  # 🌐 API Gateway
   # ======================
   api-gateway:
     image: ecom/api-gateway:e1
     container_name: api-gateway
     ports:
-      - "8080:8080"                    # Main entry for external clients
+      - "8080:8080"
     networks:
       - ecom-net
     depends_on:
@@ -132,13 +134,53 @@ services:
       product-service:
         condition: service_started
       eureka-server:
-        condition: service_healthy     # Ensures gateway can register routes properly
+        condition: service_healthy
+
+  # ======================
+  # 🐘 Zookeeper
+  # ======================
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - ecom-net
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ======================
+  # 📨 Kafka Broker
+  # ======================
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "order-created:1:1"
+    networks:
+      - ecom-net
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-c", "nc -z localhost 9092"]
+      interval: 15s
+      timeout: 10s
+      retries: 6
 
 # ======================
 # 🌉 Network & Volumes
 # ======================
 networks:
-  ecom-net:                            # Custom network for service communication
+  ecom-net:
 
 volumes:
-  mysql_data:                          # Persistent MySQL storage
+  mysql_data:

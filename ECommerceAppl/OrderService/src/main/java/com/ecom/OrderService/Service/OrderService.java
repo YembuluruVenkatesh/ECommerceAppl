@@ -4,6 +4,7 @@ import com.ecom.CustomerService.dto.ErrorResponse;
 import com.ecom.OrderService.Entity.Customer;
 import com.ecom.OrderService.Entity.Order;
 import com.ecom.OrderService.Repository.OrderRepository;
+import com.ecom.OrderService.dto.OrderCreatedEvent;
 import com.ecom.OrderService.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,11 +22,13 @@ public class OrderService {
 
     private final OrderRepository repository;
     private final RestTemplate restTemplate;
+    private final OrderEventPublisher orderEventPublisher;
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
-    public OrderService(OrderRepository repository, RestTemplate restTemplate) {
+    public OrderService(OrderRepository repository, RestTemplate restTemplate,OrderEventPublisher orderEventPublisher) {
         this.repository = repository;
         this.restTemplate = restTemplate;
+        this.orderEventPublisher = orderEventPublisher;
     }
 
     public List<Order> getAllOrders() {
@@ -39,8 +42,9 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         logger.warn("Creating order: {}", order);
-        //String url = "http://localhost:8080/api/customers/" + order.getCustomerId(); - // Old (hardcoded)
-        String url = "http://CUSTOMER-SERVICE/api/customers/" + order.getCustomerId(); // New (Eureka service name)
+
+        String url = "http://CUSTOMER-SERVICE/api/customers/" + order.getCustomerId();
+
         try {
             ResponseEntity<Customer> response = restTemplate.getForEntity(url, Customer.class);
             logger.warn("Response from Customer Service: {}", response.getBody());
@@ -52,7 +56,6 @@ public class OrderService {
             }
 
         } catch (HttpClientErrorException ex) {
-            // Extract only the message from the Customer Service error response
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 ErrorResponse error = mapper.readValue(ex.getResponseBodyAsString(), ErrorResponse.class);
@@ -62,7 +65,17 @@ public class OrderService {
             }
         }
 
-        logger.warn("Customer found. Creating order...");
-        return repository.save(order);
+        logger.warn("✅ Customer found. Creating order...");
+
+        // Save order first
+        Order savedOrder = repository.save(order);
+
+        // 🔥 Publish event to Kafka AFTER saving
+        orderEventPublisher.publishOrderCreatedEvent(
+                new OrderCreatedEvent(savedOrder.getId(), savedOrder.getProductId(), savedOrder.getQuantity())
+        );
+
+        return savedOrder;
     }
+
 }
