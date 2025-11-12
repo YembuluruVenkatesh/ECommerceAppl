@@ -59,4 +59,32 @@ docker logs -f product-service // to see the logs
 
 mvn clean install -DskipTests
 
+---------------------------------------------------
+https://hub.docker.com/repositories  - 
+
+1. docker images
+
+EPOSITORY          TAG       IMAGE ID       CREATED          SIZE
+myapp               latest    a1b2c3d4e5f6   5 minutes ago    200MB
+
+2. docker login
+If successful, you’ll see: Login Succeeded.
+
+3. docker tag local-image-name username/repo-name:tag
+ex : docker tag myapp:latest venkaty/myapp:latest  // Replace venkaty with your Docker Hub username.
+
+4.Push the image to Docker Hub
+docker push venkaty/myapp:latest
+
+5. pulling it back to test
+docker pull venkaty/myapp:latest
+
+6. Delete:
+
+Go to 👉 https://hub.docker.com
+•  Sign in to your account.
+•  Navigate to Repositories → Your Repository (e.g., venkaty/myapp)
+•  Click on the Tags tab.
+•  Find the tag you want to delete (e.g., latest).
+•  Click the Delete (🗑️) icon next to that tag.
 
