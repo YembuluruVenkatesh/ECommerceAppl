@@ -4,8 +4,9 @@ import com.ecom.CustomerService.dto.ErrorResponse;
 import com.ecom.OrderService.Entity.Customer;
 import com.ecom.OrderService.Entity.Order;
 import com.ecom.OrderService.Repository.OrderRepository;
-import com.ecom.OrderService.dto.OrderCreatedEvent;
 import com.ecom.OrderService.exception.ResourceNotFoundException;
+import com.ecommerce.dto.OrderDto;
+import com.ecommerce.dto.OrderEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class OrderService {
     private final OrderEventPublisher orderEventPublisher;
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
-    public OrderService(OrderRepository repository, RestTemplate restTemplate,OrderEventPublisher orderEventPublisher) {
+    public OrderService(OrderRepository repository, RestTemplate restTemplate, OrderEventPublisher orderEventPublisher) {
         this.repository = repository;
         this.restTemplate = restTemplate;
         this.orderEventPublisher = orderEventPublisher;
@@ -70,12 +71,21 @@ public class OrderService {
         // Save order first
         Order savedOrder = repository.save(order);
 
-        // 🔥 Publish event to Kafka AFTER saving
-        orderEventPublisher.publishOrderCreatedEvent(
-                new OrderCreatedEvent(savedOrder.getId(), savedOrder.getProductId(), savedOrder.getQuantity())
+        // 🆕 Build OrderDto for the event payload
+        OrderDto orderDto = new OrderDto(
+                savedOrder.getId(),
+                savedOrder.getCustomerId(),
+                savedOrder.getProductId(),
+                savedOrder.getQuantity(),
+                savedOrder.getTotalPrice()
         );
+
+        // 🧩 Build and publish the OrderEvent
+        OrderEvent event = new OrderEvent("ORDER_CREATED", orderDto);
+        orderEventPublisher.publishOrderCreatedEvent(event);
+
+        logger.info("✅ Published ORDER_CREATED event for order ID {}", savedOrder.getId());
 
         return savedOrder;
     }
-
 }

@@ -1,0 +1,3 @@
+com\ecommerce\dto\ProductDto.class
+com\ecommerce\dto\OrderDto.class
+com\ecommerce\dto\OrderEvent.class

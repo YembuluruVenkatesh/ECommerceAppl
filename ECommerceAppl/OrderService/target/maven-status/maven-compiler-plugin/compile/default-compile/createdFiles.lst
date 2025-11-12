@@ -11,5 +11,4 @@ com\ecom\OrderService\Configuration\AppConfig.class
 com\ecom\OrderService\exception\ResourceNotFoundException.class
 com\ecom\OrderService\Repository\OrderRepository.class
 com\ecom\OrderService\Service\OrderServiceCircuitBreakerWitRetry.class
-com\ecom\OrderService\dto\OrderCreatedEvent.class
 com\ecom\OrderService\Entity\Order.class

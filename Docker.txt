@@ -3,6 +3,8 @@
 
  docker network create ecom-net // Create a custom Docker network
 
+
+
  docker run --name mysql-db --network ecom-net -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ecommerce -p 3307:3306 -d mysql:8
 
 
@@ -45,4 +47,16 @@ docker-compose up -d // Run all services
 docker-compose down // To stop all containers
  
 docker-compose down -v // want to stop and remove all containers and volumes
+
+// Remove old containers and images (optional but recommended)
+docker compose down
+docker rmi ecom/order-service:e1 ecom/product-service:e1
+
+
+docker logs -f product-service // to see the logs
+
+-----------------------------
+
+mvn clean install -DskipTests
+
 
